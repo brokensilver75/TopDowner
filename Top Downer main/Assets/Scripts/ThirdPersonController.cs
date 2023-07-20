@@ -156,9 +156,13 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
-            JumpAndGravity();
-            GroundedCheck();
+            //JumpAndGravity();
+            //GroundedCheck();
             Move();
+            if (_input.dash)
+            {
+                Dash();
+            }
         }
 
         private void LateUpdate()
@@ -175,7 +179,7 @@ namespace StarterAssets
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
         }
 
-        private void GroundedCheck()
+        /*private void GroundedCheck()
         {
             // set sphere position, with offset
             Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
@@ -188,7 +192,7 @@ namespace StarterAssets
             {
                 _animator.SetBool(_animIDGrounded, Grounded);
             }
-        }
+        }*/
 
         private void CameraRotation()
         {
@@ -214,7 +218,8 @@ namespace StarterAssets
         private void Move()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
-            float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            //Set target seed as SprintSpeed as player does not need to walk
+            float targetSpeed = SprintSpeed; //_input.sprint ? SprintSpeed : MoveSpeed;
 
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -279,7 +284,7 @@ namespace StarterAssets
             }
         }
 
-        private void JumpAndGravity()
+       /* private void JumpAndGravity()
         {
             if (Grounded)
             {
@@ -346,7 +351,7 @@ namespace StarterAssets
             {
                 _verticalVelocity += Gravity * Time.deltaTime;
             }
-        }
+        }*/
 
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
         {
@@ -388,5 +393,21 @@ namespace StarterAssets
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
             }
         }
+
+        private void Dash()
+        {
+            transform.position += transform.forward.normalized; 
+            Debug.Log("DASH!!!!");
+        }
+
+        void OnCollisionEnter(Collision other)
+        {
+            if (_input.dash)
+            {
+                _input.dash = false;
+            }
+        }
+
+
     }
 }
