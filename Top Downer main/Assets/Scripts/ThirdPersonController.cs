@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
 #endif
@@ -14,12 +15,20 @@ namespace StarterAssets
 #endif
     public class ThirdPersonController : MonoBehaviour
     {
+        [Header("Dash Stuff")]
+        [SerializeField] float dashDistance = 3f;
+        RaycastHit hit;
+        InputAction action = new InputAction(binding: "<Keyboard>/Control");
+
+        float startTime;
+
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
 
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
+        public float targetSpeed;
 
         [Tooltip("How fast the character turns to face movement direction")]
         [Range(0.0f, 0.3f)]
@@ -219,7 +228,7 @@ namespace StarterAssets
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
             //Set target seed as SprintSpeed as player does not need to walk
-            float targetSpeed = SprintSpeed; //_input.sprint ? SprintSpeed : MoveSpeed;
+            targetSpeed = SprintSpeed; //_input.sprint ? SprintSpeed : MoveSpeed;
 
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -394,19 +403,52 @@ namespace StarterAssets
             }
         }
 
-        private void Dash()
+        public void Dash()
         {
-            transform.position += transform.forward.normalized; 
+            
+            //transform.position += transform.forward.normalized * dashDistance;
+            //StartCoroutine(MoveFast());
+            //targetSpeed += 10f; 
+             //_controller.Move(transform.forward * 7 * Time.deltaTime);
+             if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), transform.forward, out hit, Mathf.Infinity))
+             {
+                Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.green);
+                if (hit.distance <= dashDistance)
+                {
+                    _controller.Move(transform.forward * hit.distance * Time.deltaTime);
+                }
+                else
+                {
+                    _controller.Move(transform.forward * hit.distance * Time.deltaTime);
+                }
+             }
+             else
+             {
+                Debug.DrawRay(transform.position + new Vector3(0, 1, 0), transform.forward * dashDistance, Color.red);
+                _controller.Move(transform.forward * dashDistance * Time.deltaTime);
+             }
+
             Debug.Log("DASH!!!!");
+            _input.dash = false;
         }
 
-        void OnCollisionEnter(Collision other)
+        /*void OnCollisionEnter(Collision other)
         {
             if (_input.dash)
             {
                 _input.dash = false;
             }
-        }
+        }*/
+
+        /*IEnumerator MoveFast()
+        {
+            startTime = Time.time;
+            while(Time.time < startTime + dashTime)
+            {
+                _controller.Move(transform.forward * 7 * Time.deltaTime);
+            }
+            yield return null;
+        }*/
 
 
     }

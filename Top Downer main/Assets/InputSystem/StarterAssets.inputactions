@@ -45,9 +45,9 @@
                     "name": "Dash",
                     "type": "Value",
                     "id": "e76f7b52-ad93-4103-bb77-1791e4db84ec",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Key",
                     "processors": "",
-                    "interactions": "Press",
+                    "interactions": "",
                     "initialStateCheck": true
                 }
             ],
