@@ -17,6 +17,7 @@ namespace StarterAssets
     {
         [Header("Dash Stuff")]
         [SerializeField] float dashDistance = 3f;
+        Vector3 inputDirection;
         RaycastHit hit;
         InputAction action = new InputAction(binding: "<Keyboard>/Control");
 
@@ -163,6 +164,7 @@ namespace StarterAssets
 
         private void Update()
         {
+            
             _hasAnimator = TryGetComponent(out _animator);
 
             //JumpAndGravity();
@@ -263,7 +265,7 @@ namespace StarterAssets
             if (_animationBlend < 0.01f) _animationBlend = 0f;
 
             // normalise input direction
-            Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+            inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
 
             // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is a move input rotate player when the player is moving
@@ -410,25 +412,27 @@ namespace StarterAssets
             //StartCoroutine(MoveFast());
             //targetSpeed += 10f; 
              //_controller.Move(transform.forward * 7 * Time.deltaTime);
-             if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), transform.forward, out hit, Mathf.Infinity))
+             if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), inputDirection, out hit, dashDistance))
              {
-                Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.green);
+                Debug.DrawRay(transform.position + new Vector3(0, 1, 0), inputDirection * hit.distance, Color.yellow);
                 if (hit.distance <= dashDistance)
                 {
                     _controller.Move(transform.forward * hit.distance * Time.deltaTime);
+                    Debug.Log(hit.distance);
                 }
                 else
                 {
+                    Debug.DrawRay(transform.position + new Vector3(0, 1, 0), inputDirection * dashDistance, Color.yellow);
                     _controller.Move(transform.forward * hit.distance * Time.deltaTime);
                 }
              }
              else
              {
-                Debug.DrawRay(transform.position + new Vector3(0, 1, 0), transform.forward * dashDistance, Color.red);
+                //Debug.DrawRay(transform.position + new Vector3(0, 1, 0), transform.forward * dashDistance, Color.red);
                 _controller.Move(transform.forward * dashDistance * Time.deltaTime);
              }
 
-            Debug.Log("DASH!!!!");
+            //Debug.Log("DASH!!!!");
             _input.dash = false;
         }
 
