@@ -168,7 +168,7 @@ namespace StarterAssets
             _hasAnimator = TryGetComponent(out _animator);
 
             //JumpAndGravity();
-            //GroundedCheck();
+            GroundedCheck();
             Move();
             if (_input.dash)
             {
@@ -190,7 +190,7 @@ namespace StarterAssets
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
         }
 
-        /*private void GroundedCheck()
+        private void GroundedCheck()
         {
             // set sphere position, with offset
             Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
@@ -203,7 +203,7 @@ namespace StarterAssets
             {
                 _animator.SetBool(_animIDGrounded, Grounded);
             }
-        }*/
+        }
 
         private void CameraRotation()
         {
