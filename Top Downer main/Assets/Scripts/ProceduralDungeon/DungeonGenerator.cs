@@ -18,6 +18,10 @@ internal class DungeonGenerator
     {
         BinarySpacepartitioner bsp = new BinarySpacepartitioner(dungeonWidth, dungeonLength);
         allSpaceNodes = bsp.PrepareNodesCollection(maxIterations, minRoomWidth, minRoomLength);
-        return new List<Node>(allSpaceNodes);
+        List<Node> roomSpaces = StructureHelper.TraverseGraphToExtractLowestLeaves(bsp.RootNode);
+        RoomGenerator roomGenerator = new RoomGenerator(maxIterations, minRoomLength, minRoomWidth);
+        List<RoomNode> roomList = roomGenerator.GenerateRoomsInGivenSpace(roomSpaces);
+
+        return new List<Node>(roomList);
     }
 }
