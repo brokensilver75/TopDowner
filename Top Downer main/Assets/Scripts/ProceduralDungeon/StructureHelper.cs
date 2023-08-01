@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public static class StructureHelper
 {
-    public static List<Node> TraverseGraphToExtractLowestLeaves(RoomNode parentNode)
+    public static List<Node> TraverseGraphToExtractLowestLeaves(Node parentNode)
     {
         Queue<Node> nodesToCheck = new Queue<Node>();
         List<Node> listToReturn = new List<Node>();
@@ -65,4 +65,14 @@ public static class StructureHelper
             Random.Range((int)(minX + (maxX - minX) * pointModifier), maxX),
             Random.Range((int)(minY + (maxY - minY) * pointModifier), maxY));
     }
+
+    
+}
+
+public enum RelativePosition
+{
+    Up,
+    Down,
+    Right,
+    Left
 }
