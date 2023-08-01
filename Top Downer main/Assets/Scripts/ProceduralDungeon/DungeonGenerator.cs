@@ -14,13 +14,13 @@ internal class DungeonGenerator
         this.dungeonLength = dungeonLength;
     }
 
-    public List<Node> CalculateRooms(int maxIterations, int minRoomWidth, int minRoomLength)
+    public List<Node> CalculateDungeon(int maxIterations, int minRoomWidth, int minRoomLength, float roomBottomCornerModifier, float roomTopCornerModifier, int roomOffset)
     {
         BinarySpacepartitioner bsp = new BinarySpacepartitioner(dungeonWidth, dungeonLength);
         allSpaceNodes = bsp.PrepareNodesCollection(maxIterations, minRoomWidth, minRoomLength);
         List<Node> roomSpaces = StructureHelper.TraverseGraphToExtractLowestLeaves(bsp.RootNode);
         RoomGenerator roomGenerator = new RoomGenerator(maxIterations, minRoomLength, minRoomWidth);
-        List<RoomNode> roomList = roomGenerator.GenerateRoomsInGivenSpace(roomSpaces);
+        List<RoomNode> roomList = roomGenerator.GenerateRoomsInGivenSpace(roomSpaces, roomBottomCornerModifier, roomTopCornerModifier, roomOffset);
 
         return new List<Node>(roomList);
     }

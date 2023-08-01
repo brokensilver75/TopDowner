@@ -9,6 +9,12 @@ public class DungeonGeneration : MonoBehaviour
     public int maxIterations;
     public int corridorWidth;
     public Material material;
+    [Range(0.0f, 0.3f)]
+    public float roomBottomCornerModifier;
+    [Range(0.7f, 1.0f)]
+    public float roomTopCornerModifier;
+    [Range(0.7f, 1.0f)]
+    public int roomOffset;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +24,7 @@ public class DungeonGeneration : MonoBehaviour
     public void CreateDungeon()
     {
         DungeonGenerator generator = new DungeonGenerator(dungeonWidth, dungeonLength);
-        var listOfRooms = generator.CalculateRooms(maxIterations, minRoomWidth, minRoomLength);
+        var listOfRooms = generator.CalculateDungeon(maxIterations, minRoomWidth, minRoomLength, roomBottomCornerModifier, roomTopCornerModifier, roomOffset);
         for(int i = 0; i < listOfRooms.Count; i++)
         {
             CreateMesh(listOfRooms[i].BottomLeftAreaCorner, listOfRooms[i].TopRightAreaCorner); 

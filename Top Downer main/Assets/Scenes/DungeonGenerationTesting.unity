@@ -282,13 +282,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57cad34b72e0ca48aa63befb0e6bed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minRoomWidth: 25
-  minRoomLength: 25
+  minRoomWidth: 50
+  minRoomLength: 50
   dungeonLength: 100
   dungeonWidth: 100
-  maxIterations: 5
+  maxIterations: 10
   corridorWidth: 5
   material: {fileID: 2100000, guid: ae9f6c0e00061fc47afcd838657713ea, type: 2}
+  roomBottomCornerModifier: 0.1
+  roomTopCornerModifier: 0.9
+  roomOffset: 1
 --- !u!1 &2073240008
 GameObject:
   m_ObjectHideFlags: 0
